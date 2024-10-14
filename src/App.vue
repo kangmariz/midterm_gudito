@@ -1,38 +1,59 @@
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"></link>
 <template>
-  <div>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <div class="container-fluid">
-        <router-link class="navbar-brand" to="/">Vue Spa</router-link>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <router-link class="nav-link" to="/">Home</router-link>
-            </li>
-            <li class="nav-item">
-              <router-link class="nav-link" to="/about">About</router-link>
-            </li>
-            <li class="nav-item">
-              <router-link class="nav-link" to="/todo">To Do List</router-link>
-            </li>
-          </ul>
-        </div>
-      </div>
+  <div id="app">
+    <nav>
+      <router-link to="/home">Home</router-link>
+      <router-link to="/products">Products</router-link>
     </nav>
-    <router-view />
+    <router-view :products="products" @add-product="addProduct" @edit-product="editProduct" />
   </div>
 </template>
 
 <script>
+import { reactive } from 'vue'
+
 export default {
-  name: 'App'
+  setup() {
+    const products = reactive([])
+
+    const addProduct = (newProduct) => {
+      products.push(newProduct)
+    }
+
+    const editProduct = ({ index, product }) => {
+      products[index] = product
+    }
+
+    return {
+      products,
+      addProduct,
+      editProduct
+    }
+  }
 }
 </script>
+
+<style scoped>
+nav {
+  background-color: #f0f0f0;
+  padding: 10px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  display: inline;
+  margin-right: 20px;
+}
+
+a {
+  text-decoration: none;
+  color: gray;
+}
+
+a.router-link-exact-active {
+  font-weight: bold;
+}
+</style>
